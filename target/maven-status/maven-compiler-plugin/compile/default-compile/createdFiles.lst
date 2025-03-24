@@ -10,6 +10,7 @@ tables\InvoicesTable.class
 records\Reservations.class
 records\Reservations$ReservationStatus.class
 records\RoomRecords$Availability.class
+tables\RefRoomTable.class
 records\GuestRecords.class
 records\InvoiceRecords$PaymentStatus.class
 records\RefRoomTypes$RoomType.class

@@ -112,6 +112,20 @@ public class Reservations extends Records {
         }
     }
     
+    public void deleteRecord(Reservations reservation){
+                try(Connection connection = DriverManager.getConnection(dburl, user, pass)){
+            String sqlStatement = "DELETE FROM reservationRecords\n"
+                                + "WHERE reserveID = ?";
+            
+            PreparedStatement update = connection.prepareStatement(sqlStatement);
+            
+            update.setInt(1, reservation.getReserveID());
+            update.executeUpdate();
+        } catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+        }
+    }
+    
     // Validate that guest count does not exceed room capacity
     public boolean isValidGuestCount() {
         try (Connection connection = DriverManager.getConnection(dburl, user, pass)) {
