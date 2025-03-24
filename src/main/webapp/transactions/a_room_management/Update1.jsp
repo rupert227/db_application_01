@@ -33,7 +33,7 @@
             }
         %>
 
-        <form action="Update.jsp" method="POST">
+        <form action="Update1.jsp" method="POST">
             <label for="roomID">Select Room ID:</label>
             <select name="roomID">
                 <%
