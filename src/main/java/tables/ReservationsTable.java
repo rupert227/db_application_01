@@ -47,73 +47,72 @@ public class ReservationsTable extends Tables{
         }  
     }
     
-    // Inserts a new record into the database 
-    public boolean insertNewReservation(Reservations newReservation) {
-        String sqlStatement = "INSERT INTO reservationRecords (bookRefID, roomRefID, " + 
-            "guestCount, checkInDate, checkOutDate, reservationStatus) VALUES (?, ?, ?, ?, ?, ?);";
-        
-            try (Connection connection = DriverManager.getConnection(dburl, user, pass)) {
-            PreparedStatement insert = connection.prepareStatement(sqlStatement);
-            insert.setInt(1, newReservation.getBookRefID());
-            insert.setInt(2, newReservation.getRoomRefID());
-            insert.setInt(3, newReservation.getGuestCount());
-            insert.setObject(4, newReservation.getCheckInDate());
-            insert.setObject(5, newReservation.getCheckOutDate());
-            insert.setString(6, newReservation.getReservationStatus().getReservationStatus());
-
-            int rowsAffected = insert.executeUpdate();
-            if (rowsAffected > 0) {
-
-                ResultSet generatedKeys = insert.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    newReservation.setReserveID(generatedKeys.getInt(1));  // Set generated key
-                }
-
-                return fetchAndAddLatestRecord();  // Fetch and update ArrayList
-            }
-
-
-            return false;
+    public boolean getHistory(int guestID){
+        try(Connection connection = DriverManager.getConnection(dburl, user, pass)){
+            String sqlStatement = "SELECT v.reserveID, v.bookRefID, v.roomRefID, v.guestCount, v.checkInDate, v.checkOutDate, v.reservationStatus\n" +
+                                  "FROM reservationRecords v\n" +
+                                  "JOIN guestRecords g ON v.bookRefID = g.guestID\n" +
+                                  "JOIN roomRecords r ON v.roomRefID = r.roomNumberID\n" +
+                                  "WHERE g.guestID = ?";
+            ArrayList<Reservations> records = new ArrayList<>();
             
-        } catch (SQLException sqle) {
-            System.out.println("SQL Error: " + sqle.getMessage());
+            PreparedStatement query = connection.prepareStatement(sqlStatement);
+            
+            query.setInt(1, guestID);
+            
+            ResultSet result = query.executeQuery();
+            
+            while(result.next()){
+                int reserveID = result.getInt("reserveID");
+                int bookRefID = result.getInt("bookRefID");
+                int roomRefID = result.getInt("roomRefID");
+                int guestCount = result.getInt("guestCount");
+                
+                LocalDateTime checkInDate = result.getTimestamp("checkInDate").toLocalDateTime();
+                LocalDateTime checkOutDate = result.getTimestamp("checkOutDate").toLocalDateTime();
+                String reservationStatus = result.getString("reservationStatus");
+                
+                this.reservationRecords.add(new Reservations(reserveID, bookRefID, roomRefID, guestCount, 
+                                                            checkInDate, checkOutDate, reservationStatus));
+            } 
+            
+            return true;
+        } catch(SQLException sqle){
             return false;
         }
     }
-
-    // Inserts latest record from database to ArrayList
-    private boolean fetchAndAddLatestRecord() {
-        try (Connection connection = DriverManager.getConnection(dburl, user, pass)) {
-            // Fetch the latest record (assuming auto-incremented reserveID)
-            String sql = "SELECT * FROM reservationRecords ORDER BY reserveID DESC LIMIT 1;";
-            PreparedStatement query = connection.prepareStatement(sql);
-            ResultSet records = query.executeQuery();
     
-            if (records.next()) {
-                int reserveID = records.getInt("reserveID");
-                int bookRefID = records.getInt("bookRefID");
-                int roomRefID = records.getInt("roomRefID");
-                int guestCount = records.getInt("guestCount");
-                LocalDateTime checkInDate = records.getTimestamp("checkInDate").toLocalDateTime();
-                LocalDateTime checkOutDate = records.getTimestamp("checkOutDate").toLocalDateTime();
-                String reservationStatus = records.getString("reservationStatus");
-    
-                // Add the latest record to the ArrayList
-                reservationRecords.add(new Reservations(reserveID, bookRefID, roomRefID, guestCount,
-                                                        checkInDate, checkOutDate, reservationStatus));
-                System.out.println("Latest reservation added to ArrayList.");
-                return true;
+    public Map<Integer, Double> report(int year, int month){
+        try(Connection connection = DriverManager.getConnection(dburl, user, pass)){
+            String sqlStatement = "SELECT room.roomNumberID, AVG(ABS(DATEDIFF(resv.checkOutDate, resv.checkInDate))) AS averageNumberOFDays\n" +
+                                  "FROM reservationrecords resv \n" +
+                                  "JOIN roomrecords room ON resv.roomRefID = room.roomNumberID\n" +
+                                  "WHERE YEAR(resv.checkInDate) = ? AND MONTH(resv.checkInDate) = ?\n" +
+                                  "GROUP BY room.roomNumberID\n" +
+                                  "ORDER BY roomNumberID;";
+            Map<Integer, Double> roomAvgs = new HashMap<Integer, Double>();
+            
+            PreparedStatement query = connection.prepareStatement(sqlStatement);
+            
+            query.setInt(1, year);
+            query.setInt(2, year);
+            
+            ResultSet result = query.executeQuery();
+            
+            while(result.next()){
+                int roomNumberID = result.getInt("roomNumberID");
+                double avgDays = result.getDouble("averageNumberOfDays");
+                
+                roomAvgs.put(roomNumberID, avgDays);
             }
-            return false;
-        } catch (SQLException e) {
-            System.out.println("SQL Error while fetching latest record: " + e.getMessage());
-            return false;
+            
+            return roomAvgs;
+        } catch(SQLException sqle){
+            return null;
         }
     }
-    
-
-
-    /**
+     
+   /**
      * 
      * return aggregates 
      */
