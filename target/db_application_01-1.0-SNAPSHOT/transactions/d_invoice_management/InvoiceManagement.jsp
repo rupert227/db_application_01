@@ -26,12 +26,12 @@
             }else {
         %>
             <a href="createInvoiceGuest.jsp">Create Invoice</a><br>
-            <a href="">View Invoices</a><br>
-            <a href="">Delete Invoice</a><br><br>
+            <a href="viewInvoice.jsp">View Invoices</a><br>
+            <a href="deleteInvoice.jsp">Delete Invoice</a><br><br>
         <%
             }
         %>
-        <form action="../index.html">
+        <form action="../../index.html">
             <input type="submit" value="Back To Main Menu">
         </form>
     </body>

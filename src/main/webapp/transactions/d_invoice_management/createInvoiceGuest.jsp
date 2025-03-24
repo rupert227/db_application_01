@@ -33,21 +33,29 @@
         <%
             } else {
         %>
-            Select Guest For Payment:
+            <h1>Select Guest For Payment:</h1>
             <form action="createInvoiceReservations.jsp">
-                <select id="guestID" name="guests">
+                <select id="guestID" name="guestID">
                     <%
                         for(int i = 0; i < gt.getRecords().size(); i++)
-                            for(int j = 0; j < rt.getRecords().size(); j++)
+                            for(int j = 0; j < rt.getRecords().size(); j++) {
                                 if((gt.getRecords().get(i).getGuestID() == rt.getRecords().get(j).getBookRefID()) && (rt.getRecords().get(j).getReservationStatus().getReservationStatus() == "Pending")) {
                     %>
                         <option value="<%=gt.getRecords().get(i).getGuestID()%>"><%=gt.getRecords().get(i).getFirstName()%>, <%=gt.getRecords().get(i).getLastName()%></option>
                     <%
-                        }
+                                    for(int k = 0; k < rt.getRecords().size(); k++) {
+                                        if(gt.getRecords().get(i).getGuestID() == rt.getRecords().get(k).getBookRefID())
+                                            rt.getRecords().remove(k);
+                                    }
+                                }
+                            }
                     %>
                 </select>
-                
+                <br>
+                <br>
                 <input type="submit" value="Submit">
+                <br>
+                <br>
             </form>
         <%
             }

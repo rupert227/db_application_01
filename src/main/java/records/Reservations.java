@@ -15,11 +15,11 @@ public class Reservations extends Records {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public enum ReservationStatus{
-        PENDING("Pending"),
         CONFIRMED("Confirmed"),
         CHECKED_IN("Checked-in"),
         CHECKED_OUT("Checked-out"),
-        CANCELLED("Cancelled");
+        CANCELLED("Cancelled"),
+        PENDING("Pending");
 
         private final String status;
 
@@ -250,6 +250,31 @@ public class Reservations extends Records {
             return rowsAffected > 0;
         } catch(SQLException sqle){
             return false;
+        }
+    }
+    
+    public int getDateDuration(){
+        String sqlStatement = 
+                "SELECT DATEDIFF(checkOutDate, checkInDate) AS dateDuration" +
+                " FROM reservationRecords" +
+                " WHERE reserveID = ?;";
+        
+        int dateRange = 0;
+        
+        try(Connection connection = DriverManager.getConnection(dburl, user, pass)){
+            PreparedStatement select = connection.prepareStatement(sqlStatement);
+
+            select.setInt(1, getReserveID());
+            
+            ResultSet rst = select.executeQuery();
+            
+            while(rst.next())
+                dateRange = rst.getInt("dateDuration");
+            
+            return dateRange;
+        } catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            return 0;
         }
     }
 

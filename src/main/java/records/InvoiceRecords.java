@@ -14,11 +14,12 @@ import java.time.format.FormatStyle;
  */
 public class InvoiceRecords extends Records{
     private int paymentID;
+    private int reserveID;
     private int bookRefID;
     private PaymentMethod paymentMethod;
     private PaymentStatus paymentStatus;
     private LocalDateTime paymentDate;
-    private float totalCost;
+    private double totalCost;
     
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     
@@ -58,14 +59,15 @@ public class InvoiceRecords extends Records{
         super();
     }
 
-    public InvoiceRecords(int paymentID, int bookRefID, String paymentMethod,
-        String paymentStatus, LocalDateTime paymentDate, float totalCost){
+    public InvoiceRecords(int paymentID, int reserveID, int bookRefID, String paymentMethod,
+        String paymentStatus, LocalDateTime paymentDate, double totalCost){
         super();
 
         this.paymentID = paymentID;
+        this.reserveID = reserveID;
         this.bookRefID = bookRefID;
-        this.paymentMethod = PaymentMethod.valueOf(paymentMethod);
-        this.paymentStatus = PaymentStatus.valueOf(paymentStatus);
+        this.paymentMethod = PaymentMethod.valueOf(paymentMethod.replace(" ","_").toUpperCase());
+        this.paymentStatus = PaymentStatus.valueOf(paymentStatus.toUpperCase());
         this.paymentDate = paymentDate;
         this.totalCost = totalCost;
     }
@@ -98,15 +100,41 @@ public class InvoiceRecords extends Records{
         }
     }
     
+    public boolean delete(){
+        try {
+            Connection conn;
+            conn = DriverManager.getConnection(dburl, user, pass);
+            System.out.println("Connection Successful");
+
+            PreparedStatement insert = conn.prepareStatement(
+                    "DELETE FROM invoiceRecords WHERE paymentID = ?;");
+            
+            insert.setInt(1, getPaymentID());
+            
+            insert.executeUpdate();
+            
+            System.out.println("Invoice payment deleted.");
+            
+            insert.close();
+            conn.close();
+            
+            return true;
+        }
+        catch (SQLException sqle){
+            System.out.print(sqle.getMessage());
+            return false;
+        }
+    }
+    
     //testing/debugging
     public static void main(String[] args){
-        InvoiceRecords ir = new InvoiceRecords();
+        //InvoiceRecords ir = new InvoiceRecords();
         
-        ir.setPaymentID(0);
-        ir.setBookRefID(1);
-        ir.setTotalCost(Float.parseFloat("200.20"));
-        ir.setPaymentDate(LocalDateTime.parse("2025-03-21 08:24",DATE_FORMAT));
-        ir.paymentMethod = PaymentMethod.CREDIT_CARD;
+        //ir.setPaymentID(0);
+        //ir.setBookRefID(1);
+        //ir.setTotalCost(Float.parseFloat("200.20"));
+        //ir.setPaymentDate(LocalDateTime.parse("2025-03-21 08:24",DATE_FORMAT));
+        //ir.paymentMethod = PaymentMethod.CREDIT_CARD;
 
         //ir.insertRecord();
         
@@ -124,11 +152,15 @@ public class InvoiceRecords extends Records{
         this.paymentID = paymentID;
     }
     
+    public void setReserveID(int reserveID) {
+        this.reserveID = reserveID;
+    }
+    
     public void setBookRefID(int bookRefID) {
         this.bookRefID = bookRefID;
     }
     
-    public void setTotalCost(float totalCost) {
+    public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
     
@@ -149,11 +181,15 @@ public class InvoiceRecords extends Records{
         return this.paymentID;
     }
     
+    public int getReserveID() {
+        return this.reserveID;
+    }
+    
     public int getBookRefID() {
         return this.bookRefID;
     }
     
-    public float getTotalCost() {
+    public double getTotalCost() {
         return this.totalCost;
     }
     
