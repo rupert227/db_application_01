@@ -18,11 +18,25 @@ public class RefRoomTypes {
         }
     }
 
-    private double roomPrice;
+    private RoomType roomType;
+    private float roomPrice;
+    private int maxCapacity;
 
-    public double getRoomPrice() { 
-        return roomPrice; }
-    
-    public void setRoomPrice(double roomPrice) { 
-        this.roomPrice = roomPrice; }
+    public RefRoomTypes(RoomType roomType, float roomPrice, int maxCapacity) {
+        this.roomType = roomType;
+        this.roomPrice = roomPrice;
+        this.maxCapacity = maxCapacity;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public float getRoomPrice() {
+        return roomPrice;
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
+    }
 }
