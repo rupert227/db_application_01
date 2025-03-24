@@ -21,7 +21,7 @@
                 } else {
             %>
             <h1>Room Records:</h1>
-            <table>
+            <table border="1" style="border-collapse: collapse;" cellpadding="5">
                 <tr>
                     <th>Room ID No.</th>
                     <th>Room Type</th>
