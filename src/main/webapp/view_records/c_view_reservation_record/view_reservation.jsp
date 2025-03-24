@@ -8,6 +8,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            body {
+                text-align: center;
+            }
+        </style>
         <title>View Transaction History</title>
     </head>
     <body>
@@ -17,7 +22,8 @@
             <input type="number" id="guestID" name="guestID" required>
             <button type="submit">Submit</button>
         </form>
-        <form action="/db_application_01/transactions/c_reservation_management/reservation_page.jsp" method="GET">
+        <br><br>
+        <form action="/db_application_01/index.html" method="GET">
             <button type="submit">Menu</button>
         </form>
     </body>
