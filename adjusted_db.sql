@@ -13,7 +13,7 @@ CREATE TABLE roomRecords (
 	roomNumberID INT PRIMARY KEY AUTO_INCREMENT,
     
     roomType ENUM('Single', 'Double', 'Suite') NOT NULL,
-    availability ENUM('Available', 'Occupied') 
+    availability ENUM('Available', 'Occupied', 'Maintenance') 
 		DEFAULT 'Available',
 	CONSTRAINT FOREIGN KEY(roomType)
 		REFERENCES refRoomTypes(roomType)
