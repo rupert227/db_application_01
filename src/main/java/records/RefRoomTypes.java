@@ -22,12 +22,17 @@ public class RefRoomTypes {
     private float roomPrice;
     private int maxCapacity;
 
+    // No-argument constructor for flexibility
+    public RefRoomTypes() { }
+
+    // Constructor with parameters
     public RefRoomTypes(RoomType roomType, float roomPrice, int maxCapacity) {
         this.roomType = roomType;
         this.roomPrice = roomPrice;
         this.maxCapacity = maxCapacity;
     }
 
+    // Getters
     public RoomType getRoomType() {
         return roomType;
     }
@@ -38,5 +43,18 @@ public class RefRoomTypes {
 
     public int getMaxCapacity() {
         return maxCapacity;
+    }
+
+    // Setters for updating values
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
+    public void setRoomPrice(float roomPrice) {
+        this.roomPrice = roomPrice;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
     }
 }
