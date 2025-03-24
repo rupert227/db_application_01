@@ -15,7 +15,7 @@
                 Reservations reservation = new Reservations();
 
                 int reserveID = Integer.parseInt(request.getParameter("reserveID"));
-                String status = request.getParameter("status");
+                String status = request.getParameter("reservationStatus");
 
                 reservation.setReserveID(reserveID);
                 
@@ -44,6 +44,11 @@
         %>
                 <h1>Reservation Cancelled!</h1>
         <%
+                } else if(status.equalsIgnoreCase("delete")){
+                    reservation.deleteRecord(reservation);
+        %>
+                <h1>Reservation Deleted!</h1>
+        <%
                 }
             } catch(Exception e){
         %>
@@ -52,4 +57,7 @@
             }
         %>
     </body>
+    <form action="/db_application_01/transactions/c_reservation_management/reservation_page.jsp" method="GET">
+        <button type="submit">Back to Menu</button>
+    </form>
 </html>
