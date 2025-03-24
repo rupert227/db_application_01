@@ -8,6 +8,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            body {
+                text-align: center;
+            }
+        </style>
         <title>Reservation Record Management</title>
     </head>
     <body>
@@ -38,4 +43,7 @@
             }
         %>
     </body>
+    <form action="/db_application_01/transactions/c_reservation_management/reservation_page.jsp" method="GET">
+        <button type="submit">Back to Menu</button>
+    </form>
 </html>

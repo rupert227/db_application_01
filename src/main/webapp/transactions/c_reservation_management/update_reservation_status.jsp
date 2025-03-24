@@ -4,6 +4,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            body{
+                text-align: center;
+            }
+        </style>
         <title>Update Reservation Status</title>
         
     </head>
@@ -25,7 +30,7 @@
         </form>
         <br><br>
         <form action="/db_application_01/transactions/c_reservation_management/reservation_page.jsp" method="GET">
-            <button type="submit">Menu</button>
+            <button type="submit">Back to Menu</button>
         </form>
     </body>
 </html>
