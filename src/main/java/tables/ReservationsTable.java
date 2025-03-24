@@ -95,7 +95,7 @@ public class ReservationsTable extends Tables{
             PreparedStatement query = connection.prepareStatement(sqlStatement);
             
             query.setInt(1, year);
-            query.setInt(2, year);
+            query.setInt(2, month);
             
             ResultSet result = query.executeQuery();
             

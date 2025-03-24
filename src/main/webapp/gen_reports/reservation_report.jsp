@@ -8,6 +8,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Report</title>
         <style>
+            body{
+                text-align: center;
+            }
             table{
                 width: 100%;
                 border-collapse: collapse;

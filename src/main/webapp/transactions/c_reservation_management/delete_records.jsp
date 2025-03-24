@@ -11,6 +11,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Delete a Record</title>
         <style>
+            body{
+                text-align: center;
+            }
             table{
                 width: 100%;
                 border-collapse: collapse;
@@ -68,7 +71,8 @@
             <input type="number" id="reserveID" name="reserveID" required>
             <input type="hidden" name="status" value="delete">
             <button type="submit">Submit</button>
-        </form>
+        </form
+        <br><br>
         <form action="/db_application_01/transactions/c_reservation_management/reservation_page.jsp" method="GET">
             <button type="submit">Back to Menu</button>
         </form>
