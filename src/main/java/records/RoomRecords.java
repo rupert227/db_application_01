@@ -14,7 +14,8 @@ public class RoomRecords extends Records {
 
     public enum Availability {
         AVAILABLE("Available"),
-        OCCUPIED("Occupied");
+        OCCUPIED("Occupied"),
+        MAINTENANCE("Maintenance");
 
         private final String avail;
 

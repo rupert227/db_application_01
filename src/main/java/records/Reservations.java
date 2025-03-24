@@ -14,12 +14,12 @@ public class Reservations extends Records {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public enum ReservationStatus {
+    public enum ReservationStatus{
+        PENDING("Pending"),
         CONFIRMED("Confirmed"),
         CHECKED_IN("Checked-in"),
         CHECKED_OUT("Checked-out"),
-        CANCELLED("Cancelled"),
-        NO_SHOW("No-show");
+        CANCELLED("Cancelled");
 
         private final String status;
 
@@ -41,7 +41,6 @@ public class Reservations extends Records {
     public Reservations(int reserveID, int bookRefID, int roomRefID, int guestCount,
                         LocalDateTime checkInDate, LocalDateTime checkOutDate, String reservationStatus) {
         super();
-        
         setReserveID(reserveID);
         setBookRefID(bookRefID);
         setRoomRefID(roomRefID);
@@ -50,6 +49,18 @@ public class Reservations extends Records {
         setCheckOutDate(checkOutDate);
         setReservationStatus(reservationStatus);
     }
+    
+    public Reservations(int bookRefID, int roomRefID, int guestCount,
+                        LocalDateTime checkInDate, LocalDateTime checkOutDate, String reservationStatus) {
+        super();
+        setBookRefID(bookRefID);
+        setRoomRefID(roomRefID);
+        setGuestCount(guestCount);
+        setCheckInDate(checkInDate);
+        setCheckOutDate(checkOutDate);
+        setReservationStatus(reservationStatus);
+    }
+
 
     // --- Validation Methods ---
 
@@ -65,7 +76,7 @@ public class Reservations extends Records {
     
     public void recordGuestCount(){
         String sqlStatement = 
-                "UDPATE reservation_record" +
+                "UPDATE reservation_record" +
                 "SET guestCount = ?" +
                 "WHERE bookRefID = ?;";
         
@@ -77,7 +88,27 @@ public class Reservations extends Records {
                 update.setInt(2, getBookRefID());
             }
         } catch(SQLException sqle){
-            return;
+            System.out.println(sqle.getMessage());
+        }
+    }
+    
+    public void insertRecord(Reservations reservation){
+        try(Connection connection = DriverManager.getConnection(dburl, user, pass)){
+            String sqlStatement = "INSERT INTO reservationRecords(bookRefID, roomRefID, guestCount, checkInDate, checkoutDate, reservationStatus)"
+                                + "VALUES(?, ?, ?, ?, ?, ?)";
+            
+            PreparedStatement update = connection.prepareStatement(sqlStatement);
+            
+            update.setInt(1, reservation.getBookRefID());
+            update.setInt(2, reservation.getRoomRefID());
+            update.setInt(3, reservation.getGuestCount());
+            update.setString(4, reservation.getCheckInDate().format(DATE_FORMAT));
+            update.setString(5, reservation.getCheckOutDate().format(DATE_FORMAT));
+            update.setString(6, reservation.reservationStatus.getReservationStatus());
+            
+            update.executeUpdate();
+        } catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
         }
     }
     
@@ -165,7 +196,7 @@ public class Reservations extends Records {
     // Update reservation status to "Checked-out"
     public boolean checkOut() {
         try (Connection connection = DriverManager.getConnection(dburl, user, pass)) {
-            String sql = "UPDATE reservation_record SET reservation_Status = ? WHERE reserveID = ?";
+            String sql = "UPDATE reservationRecords SET reservationStatus = ? WHERE reserveID = ?";
             PreparedStatement pst = connection.prepareStatement(sql);
             pst.setString(1, ReservationStatus.CHECKED_OUT.getReservationStatus());
             pst.setInt(2, reserveID);
@@ -185,7 +216,8 @@ public class Reservations extends Records {
                     "WHERE reserveID = ?");
             pst.setString(1, ReservationStatus.CANCELLED.getReservationStatus());
             pst.setInt(2, getReserveID());
-            return true;
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
         } catch(SQLException sqle){
             return false;
         }
@@ -199,7 +231,23 @@ public class Reservations extends Records {
                     "WHERE reserveID = ?");
             pst.setString(1, ReservationStatus.CONFIRMED.getReservationStatus());
             pst.setInt(2, getReserveID());
-            return true;
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
+        } catch(SQLException sqle){
+            return false;
+        }
+    }
+    
+    public boolean pending(){
+        try(Connection connection = DriverManager.getConnection(dburl, user, pass)){
+            PreparedStatement pst = connection.prepareStatement(
+                    "UPDATE reservationRecords\n" +
+                    "SET reservationStatus = ?\n" +
+                    "WHERE reserveID = ?");
+            pst.setString(1, ReservationStatus.PENDING.getReservationStatus());
+            pst.setInt(2, getReserveID());            
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
         } catch(SQLException sqle){
             return false;
         }
