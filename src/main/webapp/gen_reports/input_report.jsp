@@ -3,6 +3,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            body{
+                text-align: center;
+            }
+        </style>
         <title>Report</title>
     </head>
     <body>
@@ -23,12 +28,14 @@
                 <option value="11">November</option>
                 <option value="12">December</option>
             </select>
+            <br><br>
             <label for="year">Year:</label>
             <input type="number" id="year" name="year" required>
 
             <button type="submit">Submit</button>
         </form>
-        <form action="/db_application_01/transactions/c_reservation_management/reservation_page.jsp" method="GET">
+        <br><br>
+        <form action="/db_application_01/index.html" method="GET">
             <button type="submit">Menu</button>
         </form>
     </body>
