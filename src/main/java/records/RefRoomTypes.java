@@ -18,11 +18,11 @@ public class RefRoomTypes {
         }
     }
 
-    private double roomPrice;
+    private float roomPrice;
 
     public double getRoomPrice() { 
         return roomPrice; }
     
-    public void setRoomPrice(double roomPrice) { 
+    public void setRoomPrice(float roomPrice) { 
         this.roomPrice = roomPrice; }
 }

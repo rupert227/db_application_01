@@ -9,7 +9,7 @@ public class RoomRecords extends Records {
     // Refers to the RoomType enum in RefRoomTypes
     
     private Availability availability;
-    private double price;
+    private float price;
     private int maxCapacity;
 
     public enum Availability {
@@ -43,7 +43,7 @@ public class RoomRecords extends Records {
     }
 
     public RoomRecords(int roomID, RefRoomTypes.RoomType type, 
-        Availability availability, double price, int maxCapacity) {
+        Availability availability, float price, int maxCapacity) {
         super();
         
         this.roomID = roomID;
@@ -53,42 +53,33 @@ public class RoomRecords extends Records {
         this.maxCapacity = maxCapacity;
     }
 
-    public boolean updateAvailability(int roomID, Availability newAvailability) {
-        try (Connection connection = DriverManager.getConnection(dburl, user, pass)) {
-            PreparedStatement stmt = connection.prepareStatement(
-                "UPDATE room_record SET availability = ? WHERE room_numberID = ?");
-            
-            stmt.setString(1, newAvailability.getAvail());
-            stmt.setInt(2, roomID);
-            stmt.executeUpdate();
-        
-            this.availability = newAvailability;
-        
-            return true;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+    // Getters and setters
+    public int getRoomID() {
+        return roomID;
     }
 
-    public int getRoomID() { 
-        return roomID; 
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
     }
     
-    public RefRoomTypes.RoomType getType() { 
-        return type; 
+    public RefRoomTypes.RoomType getType() {
+        return type;
     }
-    
-    public Availability getAvailability() { 
-        return availability; 
+
+    public Availability getAvailability() {
+        return availability;
     }
-    
-    public double getPrice() { 
-        return price; 
+
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
     }
-    
-    public int getMaxCapacity() { 
-        return maxCapacity; 
+
+    public float getPrice() {
+        return price;
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 }
