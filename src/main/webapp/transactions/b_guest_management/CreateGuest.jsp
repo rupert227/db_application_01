@@ -42,7 +42,7 @@
             }
         %>
 
-        <form action="Create.jsp" method="POST">
+        <form action="CreateGuest.jsp" method="POST">
             <label for="firstName">First Name:</label>
             <input type="text" name="firstName"><br><br>
 
