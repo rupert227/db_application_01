@@ -12,4 +12,8 @@
         <a href="UpdateGuest.jsp">Update Guest Information</a><br>
         <a href="DeleteGuest.jsp">Delete Guest Record</a><br>
     </body>
+    <br>
+        <form action="../../index.html">
+            <input type="submit" value="Back To Main Menu">
+        </form>
 </html>
