@@ -6,9 +6,9 @@ INSERT INTO refRoomTypes (roomType, roomPrice, maxCapacity) VALUES
 
 -- Insert into roomRecords
 INSERT INTO roomRecords (roomType, availability) VALUES
-('Single', 'Available'),
-('Single', 'Occupied'),
-('Single', 'Available'),
+('Standard', 'Available'),
+('Standard', 'Occupied'),
+('Standard', 'Available'),
 ('Double', 'Available'),
 ('Double', 'Occupied'),
 ('Double', 'Available'),

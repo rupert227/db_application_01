@@ -12,7 +12,7 @@ CREATE TABLE refRoomTypes (
 CREATE TABLE roomRecords (
 	roomNumberID INT PRIMARY KEY AUTO_INCREMENT,
     
-    roomType ENUM('Single', 'Double', 'Suite') NOT NULL,
+    roomType ENUM('Standard', 'Double', 'Suite') NOT NULL,
     availability ENUM('Available', 'Occupied', 'Maintenance') 
 		DEFAULT 'Available',
 	CONSTRAINT FOREIGN KEY(roomType)
