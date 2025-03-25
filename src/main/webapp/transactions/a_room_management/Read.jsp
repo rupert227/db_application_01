@@ -8,6 +8,7 @@
         <title>View Rooms</title>
     </head>
     <body>
+    <div align="center">
             <jsp:useBean id="rt" class="tables.RoomTable" scope="page"/>
             
             <%
@@ -49,5 +50,6 @@
             <br><form action="room_mgmt.html">
                 <input type="submit" value="Back To Room Transactions">
             </form>
+    </div>
     </body>
 </html>

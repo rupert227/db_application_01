@@ -54,7 +54,7 @@
                     %>
                 </tbody>
             </table>
-        <form action="/db_application_01/gen_reports/input_report.jsp" method="GET">
+        <br><form action="/db_application_01/gen_reports/input_report.jsp" method="GET">
             <button type="submit">Back</button>
         </form>
     </head>

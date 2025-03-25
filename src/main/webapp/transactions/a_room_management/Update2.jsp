@@ -7,6 +7,7 @@
         <meta charset="UTF-8">
     </head>
     <body>
+    <div align="center">
         <jsp:useBean id="refRoomTable" class="tables.RefRoomTable" scope="page" />
 
         <%
@@ -70,5 +71,6 @@
         <form action="room_mgmt.html">
             <input type="submit" value="Back To Room Transactions">
         </form>
+    </div>
     </body>
 </html>

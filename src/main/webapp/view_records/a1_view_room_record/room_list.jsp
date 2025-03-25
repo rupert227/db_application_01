@@ -8,6 +8,7 @@
         <title>Room Reservation History</title>
     </head>
     <body>
+    <div align="center">
         <jsp:useBean id="rt" class="tables.RoomTable" scope="page" />
         <jsp:useBean id="reservationsTable" class="tables.ReservationsTable" scope="page" />
 
@@ -84,5 +85,7 @@
         <br><form action="../../index.html">
             <input type="submit" value="Back To Main Menu">
         </form>
+
+    </div>
     </body>
 </html>

@@ -7,6 +7,7 @@
         <meta charset="UTF-8">
     </head>
     <body>
+    <div align="center">
 
         <jsp:useBean id="refRoomTable" class="tables.RefRoomTable" scope="page" />
 
@@ -49,5 +50,6 @@
         <form action="../../index.html">
             <input type="submit" value="Back To Main Menu">
         </form>
+    </div>
     </body>
 </html>
