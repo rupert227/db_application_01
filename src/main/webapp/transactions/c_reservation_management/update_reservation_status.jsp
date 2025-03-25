@@ -25,7 +25,7 @@
         </style>
     </head>
     <body>
-        <h1>Select a Record To Delete</h1>
+        <h1>Select a Record To Update</h1>
         <form action="update.jsp" method="post">
             <table>
                 <thead>
