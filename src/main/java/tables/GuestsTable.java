@@ -99,6 +99,56 @@ public class GuestsTable extends Tables {
             return false;
         }
     }
+    
+    public boolean updateGuest(int guestID, String newEmail, String newTelNo) {
+    String sql = "UPDATE guestRecords SET email = ?, telNo = ? WHERE guestID = ?";
+    try (Connection conn = DriverManager.getConnection(dburl, user, pass);
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        stmt.setString(1, newEmail);
+        stmt.setString(2, newTelNo);
+        stmt.setInt(3, guestID);
+        
+        int rowsAffected = stmt.executeUpdate();
+        if (rowsAffected > 0) {
+            // Update in-memory records
+            for (GuestRecords guest : guestRecords) {
+                if (guest.getGuestID() == guestID) {
+                    guest.setEmail(newEmail);
+                    guest.setTelNo(newTelNo);
+                    break;
+                }
+            }
+            return true;
+        }
+        return false;
+        
+    } catch (SQLException e) {
+        System.out.println("Update Error: " + e.getMessage());
+        return false;
+    }
+}
+
+    public boolean deleteGuest(int guestID) {
+    String sql = "DELETE FROM guestRecords WHERE guestID = ?";
+    try (Connection conn = DriverManager.getConnection(dburl, user, pass);
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        stmt.setInt(1, guestID);
+        
+        int rowsAffected = stmt.executeUpdate();
+        if (rowsAffected > 0) {
+            // Remove from in-memory records
+            guestRecords.removeIf(g -> g.getGuestID() == guestID);
+            return true;
+        }
+        return false;
+        
+    } catch (SQLException e) {
+        System.out.println("Delete Error: " + e.getMessage());
+        return false;
+    }
+}
 
     // Return the in-memory list of guest records
     public ArrayList<GuestRecords> getRecords() {
