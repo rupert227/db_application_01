@@ -111,6 +111,31 @@ public class ReservationsTable extends Tables{
             return null;
         }
     }
+
+    public Map<String, Integer> report2(int year, int month) {
+        try (Connection connection = DriverManager.getConnection(dburl, user, pass)) {
+            String sqlStatement = "SELECT room.roomType, COUNT(*) AS reservationCount "
+                                 + "FROM reservationrecords resv "
+                                 + "JOIN roomrecords room ON resv.roomRefID = room.roomNumberID "
+                                 + "WHERE YEAR(resv.checkInDate) = ? AND MONTH(resv.checkInDate) = ? "
+                                 + "GROUP BY room.roomType";
+            PreparedStatement query = connection.prepareStatement(sqlStatement);
+            query.setInt(1, year);
+            query.setInt(2, month);
+    
+            Map<String, Integer> roomTypeReservations = new HashMap<>();
+            ResultSet result = query.executeQuery();
+            while (result.next()) {
+                String roomType = result.getString("roomType");
+                int reservationCount = result.getInt("reservationCount");
+                roomTypeReservations.put(roomType, reservationCount);
+            }
+            return roomTypeReservations;
+        } catch (SQLException sqle) {
+            System.out.println("SQL Error: " + sqle.getMessage());
+            return null;
+        }
+    }
      
    /**
      * 
