@@ -51,7 +51,7 @@
             <input type="submit" value="Delete Guest">
         </form>
 
-        <br><form action="guest_mgmt.html">
+        <br><form action="GuestPage.jsp">
             <input type="submit" value="Back To Guest Menu">
         </form>
     </body>
